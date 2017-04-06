@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.zip.Inflater;
 
 /**
@@ -80,7 +81,6 @@ public class fragment1 extends Fragment{
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity().getApplicationContext(), last_click , Toast.LENGTH_SHORT).show();
                 TabHost tabHost;
 
                 View dlgview = View.inflate(getContext(), R.layout.order_dlg, null);
@@ -106,7 +106,8 @@ public class fragment1 extends Fragment{
                     checkBox_vip.setChecked(table.vip_membership);
                 }
                 if (button == button_reset){
-                   table.putTableMenu(table,"","",false);
+                    Toast.makeText(getActivity().getApplicationContext(), "초기화 되었습니다", Toast.LENGTH_SHORT).show();
+                   table.putTableMenu(table,"0","0",false);
                    table.putTableTime(table,0,0);
                    table.putTableDate(table,0,0,0);
                     table.is_void = true;
@@ -137,9 +138,10 @@ public class fragment1 extends Fragment{
                                 if(table.vip_membership == true) text_mem.setText("VIP 멤버쉽");
                                 else text_mem.setText("기본 멤버쉽");
                                 text_price.setText(table.total_price+"원");
-
-
-
+                               if(table.Tablename == apple_table.Tablename) table.putTableData(apple_table,table);
+                               else if (last_table.Tablename == grape_table.Tablename) table.putTableData(grape_table,table);
+                               else if(last_table.Tablename == grapefruit_table.Tablename) table.putTableData(grapefruit_table,table);
+                               else  table.putTableData(kiwi_table,table);
                             }
                         })
                         .setNegativeButton("취소", new DialogInterface.OnClickListener() {
@@ -150,11 +152,9 @@ public class fragment1 extends Fragment{
                         })
                         .show();
 
-                if(last_table.Tablename == apple_table.Tablename) table.putTableData(apple_table, last_table);
-                else if (last_table.Tablename == grape_table.Tablename) table.putTableData(grape_table, last_table);
-                else if(last_table.Tablename == grapefruit_table.Tablename) table.putTableData(grapefruit_table, last_table);
-                else  table.putTableData(kiwi_table, last_table) ;
-            }
+
+
+        }
         });
     }
     public void clickTable(final Table table, Button button) {
@@ -162,7 +162,6 @@ public class fragment1 extends Fragment{
             @Override
             public void onClick(View v) { //토스트 + 초기화
                 if(table.is_void ==true) {
-                    last_click = table.Tablename;
                     Toast.makeText(getActivity().getApplicationContext(), "비어있는 테이블 입니다.", Toast.LENGTH_SHORT).show();
                     text_name.setText("");
                     text_time.setText("");
